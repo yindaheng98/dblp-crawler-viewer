@@ -1,6 +1,7 @@
 import { dialog, app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
+import { readFileSync } from 'node:fs'
 
 // The built directory structure
 //
@@ -115,15 +116,27 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
+let data = {}
+
+function load() {
+  const selectedFiles = dialog.showOpenDialogSync({
+    properties: ['openFile'],
+    filters: [
+      { name: 'DBLP Crawler Summary', extensions: ['dcs.js', 'dcs.json'] }
+    ]
+  });
+  if (!selectedFiles || selectedFiles.length <= 0) return;
+  const selectedFile = selectedFiles[0];
+  if (selectedFile.slice(-7) === 'dcs.js')
+    eval(readFileSync(selectedFiles[0]));
+  if (selectedFile.slice(-9) === 'dcs.json')
+    data = JSON.parse(readFileSync(selectedFiles[0]));
+}
+
 const menuTemplate = [
   {
     label: 'Open',
-    click: function () {
-      const selectedFiles = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        filters: [{ name: 'DBLP Crawler Summary Files', extensions: ['dcs.js'] }]
-      });
-    }
+    click: load,
   },
   {
     label: '2D Graph',
