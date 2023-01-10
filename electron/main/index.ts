@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { dialog, app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 
@@ -114,3 +114,42 @@ ipcMain.handle('open-win', (_, arg) => {
     childWindow.loadFile(indexHtml, { hash: arg })
   }
 })
+
+const menuTemplate = [
+  {
+    label: 'Open',
+    click: function () {
+      const selectedFiles = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        filters: [{ name: 'DBLP Crawler Summary Files', extensions: ['dcs.js'] }]
+      });
+    }
+  },
+  {
+    label: '2D Graph',
+    submenu: [
+      { label: 'Show in this window' },
+      { label: 'Show in new window' },
+    ]
+  },
+  {
+    label: '3D Graph',
+    submenu: [
+      { label: 'Show in this window' },
+      { label: 'Show in new window' },
+    ]
+  },
+  {
+    label: 'Ranking',
+    submenu: [
+      { label: 'Show in this window' },
+      { label: 'Show in new window' },
+    ]
+  },
+  {
+    role: 'Close'
+  }
+]
+
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
