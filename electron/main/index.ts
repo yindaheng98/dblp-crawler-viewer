@@ -134,7 +134,7 @@ function load() {
     let bin = readFileSync(selectedFile, { encoding: "utf8" }).replace(/\nlet /g, '').replace(/^let /g, '')
     eval(bin);
     console.log(`Sending: ${selectedFile}`);
-    win?.webContents.send('dblp-crawler-data',
+    win?.webContents.send('dblp-crawler',
       data,
       person_data,
       pub_data,
