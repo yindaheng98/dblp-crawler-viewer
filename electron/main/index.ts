@@ -50,8 +50,9 @@ async function createWindow() {
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      enableRemoteModule: false,
+      contextIsolation: true,
     },
   })
 
@@ -62,11 +63,6 @@ async function createWindow() {
   } else {
     win.loadFile(indexHtml)
   }
-
-  // Test actively push message to the Electron-Renderer
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
-  })
 
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -116,21 +112,38 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
-let data = {}
-
 function load() {
   const selectedFiles = dialog.showOpenDialogSync({
     properties: ['openFile'],
     filters: [
-      { name: 'DBLP Crawler Summary', extensions: ['dcs.js', 'dcs.json'] }
+      { name: 'DBLP Crawler Summary', extensions: ['dcs.js'] }
     ]
   });
   if (!selectedFiles || selectedFiles.length <= 0) return;
   const selectedFile = selectedFiles[0];
-  if (selectedFile.slice(-7) === 'dcs.js')
-    eval(readFileSync(selectedFiles[0]));
-  if (selectedFile.slice(-9) === 'dcs.json')
-    data = JSON.parse(readFileSync(selectedFiles[0]));
+  console.log(`File specified: ${selectedFile}`);
+  if (selectedFile.slice(-6) === 'dcs.js') {
+    let data,
+      person_data,
+      pub_data,
+      ccfpie_data,
+      conpie_data,
+      line_data,
+      cat_data,
+      ranking_data;
+    let bin = readFileSync(selectedFile, { encoding: "utf8" }).replace(/\nlet /g, '').replace(/^let /g, '')
+    eval(bin);
+    console.log(`Sending: ${selectedFile}`);
+    win?.webContents.send('dblp-crawler-data',
+      data,
+      person_data,
+      pub_data,
+      ccfpie_data,
+      conpie_data,
+      line_data,
+      cat_data,
+      ranking_data);
+  }
 }
 
 const menuTemplate = [
