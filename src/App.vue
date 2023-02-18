@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VisNetwork from './components/VisNetwork.vue'
+import ForceGraph3D from './components/3DForceGraph.vue'
 
 const nodes = [
   { id: 1, label: 'circle', shape: 'circle' },
@@ -21,8 +22,14 @@ const edges = [
   { from: 6, to: 8 }
 ]
 const options = {}
+const links = edges
+  .map(edge => ({
+    source: edge.from,
+    target: edge.to,
+  }))
 </script>
 
 <template>
   <VisNetwork :nodes=nodes :edges=edges :options=options />
+  <ForceGraph3D :nodes=nodes :links=links />
 </template>
