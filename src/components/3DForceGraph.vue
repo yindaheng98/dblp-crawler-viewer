@@ -3,6 +3,8 @@ import { onMounted, ref } from "vue";
 import ForceGraph3D from '3d-force-graph';
 
 const props = defineProps<{ nodes: object[], links: object[] }>();
+const emit = defineEmits(['NodeClick'])
+
 const visualization = ref(null);
 let network = null;
 onMounted(() => {
@@ -10,7 +12,8 @@ onMounted(() => {
     network.graphData({
         nodes: props.nodes,
         links: props.links,
-    })
+    });
+    network.onNodeClick((node) => emit('NodeClick', node))
 })
 </script>
 

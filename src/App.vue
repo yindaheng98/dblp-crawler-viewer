@@ -27,9 +27,12 @@ const links = edges
     source: edge.from,
     target: edge.to,
   }))
+function showEvent(payload) {
+  console.log(payload)
+}
 </script>
 
 <template>
-  <VisNetwork :nodes=nodes :edges=edges :options=options />
-  <ForceGraph3D :nodes=nodes :links=links />
+  <VisNetwork :nodes=nodes :edges=edges :options=options @selectNode="showEvent" />
+  <ForceGraph3D :nodes=nodes :links=links @NodeClick="showEvent" />
 </template>
