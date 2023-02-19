@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import VisNetwork from './graph/VisNetwork.vue'
-import ForceGraph3D from './graph/3DForceGraph.vue'
+import VisNetwork from '../graph/VisNetwork.vue'
+import ForceGraph3D from '../graph/3DForceGraph.vue'
 
 const props = defineProps<{ d3: boolean, nodes: object[], edges: object[], options: object }>();
 const emit = defineEmits(['selectNode'])

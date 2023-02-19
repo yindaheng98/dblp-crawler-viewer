@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, defineEmits, ref } from "vue";
+import { onMounted, defineEmits, ref } from "vue";
 import { DataSet } from "vis-data/esnext";
 import { Network } from "vis-network/esnext";
 
