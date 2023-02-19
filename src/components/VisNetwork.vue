@@ -15,10 +15,6 @@ onMounted(() => {
     }, props.options);
     network.on("selectNode", (properties) => emit("selectNode", properties))
 })
-onBeforeUnmount(() => {
-    if (network !== null)
-        network.destroy();
-})
 </script>
 
 <template>
