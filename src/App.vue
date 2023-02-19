@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Visualization from './components/Visualization.vue'
+import Visualization from './components/visualize/Visualization.vue'
 
 const nodes = [
   { id: 1, label: 'circle', shape: 'circle' },
