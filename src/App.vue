@@ -22,7 +22,7 @@ const edges = reactive([
   { from: 5, to: 7 },
   { from: 6, to: 8 }
 ])
-const options = {}
+const options = reactive({ nodes: {}, edges: {} })
 const links = edges
   .map(edge => ({
     source: edge.from,
@@ -32,12 +32,16 @@ function showEvent(payload) {
   console.log(payload)
 }
 function pop() {
-  console.log('pop')
+  nodes.pop()
   edges.pop()
+  options.nodes = { shadow: true }
+  options.edges = { shadow: true }
 }
 function push() {
-  console.log('push')
+  nodes.push({ id: 8, label: 'triangle', shape: 'triangle' })
   edges.push({ from: 6, to: 8 })
+  options.nodes = { shadow: false }
+  options.edges = { shadow: false }
 }
 </script>
 
