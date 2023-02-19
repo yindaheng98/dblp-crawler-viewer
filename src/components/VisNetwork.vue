@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, defineEmits, ref } from "vue";
+import { onMounted, defineEmits, ref } from "vue";
 import { DataSet } from "vis-data/esnext";
 import { Network } from "vis-network/esnext";
 
@@ -15,12 +15,9 @@ onMounted(() => {
     }, props.options);
     network.on("selectNode", (properties) => emit("selectNode", properties))
 })
-onBeforeUnmount(() => {
-    if (network !== null)
-        network.destroy();
-})
 </script>
 
 <template>
     <div ref="visualization">Cannot show vis-network</div>
+    <div>{{ props.edges }}</div>
 </template>
