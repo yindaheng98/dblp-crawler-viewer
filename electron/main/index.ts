@@ -35,15 +35,19 @@ if (!app.requestSingleInstanceLock()) {
 // Read more on https://www.electronjs.org/docs/latest/tutorial/security
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
-let win: BrowserWindow | null = null
+const wins: { [key: string]: BrowserWindow; } = {}
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
 
-async function createWindow(page) {
+async function createWindow(page, title) {
+  if (wins[page] && !wins[page].isDestroyed()) {
+    wins[page].focus()
+    return
+  }
   const url = join(process.env.VITE_DEV_SERVER_URL, page)
   const indexHtml = join(process.env.DIST, page)
-  win = new BrowserWindow({
-    title: 'Main window',
+  const win = new BrowserWindow({
+    title: title,
     icon: join(process.env.PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -55,6 +59,8 @@ async function createWindow(page) {
       contextIsolation: true,
     },
   })
+  wins[page] = win
+  win.on('closed', () => (delete wins[page]))
 
   if (process.env.VITE_DEV_SERVER_URL) { // electron-vite-vue#298
     win.loadURL(url)
@@ -71,18 +77,25 @@ async function createWindow(page) {
   })
 }
 
-app.whenReady().then(() => createWindow("index.html"))
+app.whenReady().then(() => createWindow("index.html", 'Main window'))
 
 app.on('window-all-closed', () => {
-  win = null
+  for (let page in wins)
+    delete wins[page]
   if (process.platform !== 'darwin') app.quit()
 })
 
 app.on('second-instance', () => {
-  if (win) {
+  for (let page in wins) {
+    const win = wins[page]
     // Focus on the main window if the user tried to open another
     if (win.isMinimized()) win.restore()
-    win.focus()
+  }
+  if (wins['index.html']) {
+    // Focus on the main window if the user tried to open another
+    wins['index.html'].focus()
+  } else if (wins['index3D.html']) {
+    wins['index3D.html'].focus()
   }
 })
 
@@ -91,24 +104,7 @@ app.on('activate', () => {
   if (allWindows.length) {
     allWindows[0].focus()
   } else {
-    createWindow()
-  }
-})
-
-// New window example arg: new windows url
-ipcMain.handle('open-win', (_, arg) => {
-  const childWindow = new BrowserWindow({
-    webPreferences: {
-      preload,
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  })
-
-  if (process.env.VITE_DEV_SERVER_URL) {
-    childWindow.loadURL(`${url}#${arg}`)
-  } else {
-    childWindow.loadFile(indexHtml, { hash: arg })
+    createWindow('index.html', 'Main window')
   }
 })
 
@@ -125,7 +121,8 @@ function load() {
   const selectedFile = selectedFiles[0];
   console.log(`File specified: ${selectedFile}`);
   summary = JSON.parse(readFileSync(selectedFile, { encoding: "utf8" }));
-  win?.webContents.send('update');
+  for (let page in wins)
+    wins[page].webContents.send('update');
 }
 
 const menuTemplate = [
@@ -135,24 +132,14 @@ const menuTemplate = [
   },
   {
     label: '2D Graph',
-    submenu: [
-      { label: 'Show in this window' },
-      { label: 'Show in new window' },
-    ]
+    click: () => createWindow('index.html', '2D Graph'),
   },
   {
     label: '3D Graph',
-    submenu: [
-      { label: 'Show in this window' },
-      { label: 'Show in new window' },
-    ]
+    click: () => createWindow('index3D.html', '3D Graph'),
   },
   {
     label: 'Ranking',
-    submenu: [
-      { label: 'Show in this window' },
-      { label: 'Show in new window' },
-    ]
   },
   {
     role: 'Close'
