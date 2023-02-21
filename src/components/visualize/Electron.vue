@@ -4,7 +4,6 @@ import Graph from '../graph/Graph.vue'
 import { getGraphData, selectNode, selectEdge } from '../../api/electron'
 
 const props = defineProps<{ d3: boolean }>();
-const emit = defineEmits(['selectNode', 'selectEdge'])
 
 const options = {}
 
