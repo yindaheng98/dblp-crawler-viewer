@@ -3,7 +3,16 @@ contextBridge.exposeInMainWorld(
   "ElectronAPI",
   {
     on: (channel, func) => {
-      ipcRenderer.on(channel, (event, ...args) => func(event, ...args));
+      return ipcRenderer.on(channel, (event, ...args) => func(event, ...args));
+    },
+    once: (channel, func) => {
+      return ipcRenderer.once(channel, (event, ...args) => func(event, ...args));
+    },
+    emit: (eventName: string | symbol, ...args: any[]) => {
+      return ipcRenderer.emit(eventName, ...args)
+    },
+    invoke: (channel: string, ...args: any[]) => {
+      return ipcRenderer.invoke(channel, ...args)
     }
   }
 )
