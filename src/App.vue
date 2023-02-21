@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Neo4J from './components/visualize/Neo4J.vue'
+import Local from './components/visualize/Local.vue'
 
 function showEvent(payload) {
   console.log(payload)
@@ -7,5 +7,5 @@ function showEvent(payload) {
 </script>
 
 <template>
-  <Neo4J :d3=true @selectNode="showEvent" />
+  <Local :d3=true @selectNode="showEvent" />
 </template>
