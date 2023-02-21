@@ -131,16 +131,18 @@ const menuTemplate = [
     click: load,
   },
   {
-    label: '2D Graph',
-    click: () => createWindow('index.html', '2D Graph'),
-  },
-  {
-    label: '3D Graph',
-    click: () => createWindow('index3D.html', '3D Graph'),
+    label: 'Graph',
+    submenu: [
+      { label: '2D', click: () => createWindow('index.html', '2D Graph') },
+      { label: '3D', click: () => createWindow('index3D.html', '3D Graph') },
+    ]
   },
   {
     label: 'Ranking',
-    click: () => createWindow('indexRanking.html', '3D Graph'),
+    submenu: [
+      { label: 'by selected publications', click: () => createWindow('indexRanking.html', 'Ranking by selected publications') },
+      { label: 'by all publications', click: () => createWindow('indexRankingAllPub.html', 'Ranking by all publications') },
+    ]
   },
   {
     role: 'Close'
