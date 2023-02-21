@@ -77,7 +77,7 @@ async function createWindow(page, title) {
   })
 }
 
-app.whenReady().then(() => createWindow("index.html", 'Main window'))
+app.whenReady().then(() => createWindow("index.html", '2D Graph'))
 
 app.on('window-all-closed', () => {
   for (let page in wins)
@@ -104,7 +104,7 @@ app.on('activate', () => {
   if (allWindows.length) {
     allWindows[0].focus()
   } else {
-    createWindow('index.html', 'Main window')
+    createWindow('index.html', '2D Graph')
   }
 })
 
