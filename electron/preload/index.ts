@@ -8,8 +8,8 @@ contextBridge.exposeInMainWorld(
     once: (channel, func) => {
       return ipcRenderer.once(channel, (event, ...args) => func(event, ...args));
     },
-    emit: (eventName: string | symbol, ...args: any[]) => {
-      return ipcRenderer.emit(eventName, ...args)
+    send: (channel: string, ...args: any[]) => {
+      return ipcRenderer.send(channel, ...args)
     },
     invoke: (channel: string, ...args: any[]) => {
       return ipcRenderer.invoke(channel, ...args)
