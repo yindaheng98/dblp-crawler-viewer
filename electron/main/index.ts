@@ -38,10 +38,10 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null = null
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
-const url = process.env.VITE_DEV_SERVER_URL
-const indexHtml = join(process.env.DIST, 'index.html')
 
-async function createWindow() {
+async function createWindow(page) {
+  const url = join(process.env.VITE_DEV_SERVER_URL, page)
+  const indexHtml = join(process.env.DIST, page)
   win = new BrowserWindow({
     title: 'Main window',
     icon: join(process.env.PUBLIC, 'favicon.ico'),
@@ -71,7 +71,7 @@ async function createWindow() {
   })
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => createWindow("index.html"))
 
 app.on('window-all-closed', () => {
   win = null
