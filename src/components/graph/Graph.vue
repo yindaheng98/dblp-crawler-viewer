@@ -4,16 +4,26 @@ import VisNetwork from './VisNetwork.vue'
 import ForceGraph3D from './3DForceGraph.vue'
 
 const props = defineProps<{ d3: boolean, nodes: object[], edges: object[], options: object }>();
-const emit = defineEmits(['selectNode'])
+const emit = defineEmits(['selectNode', 'selectEdge'])
 
 const nodes = computed(() => props.nodes)
-const edges = computed(() => props.edges)
+const edges = computed(
+    () => props.edges
+        .map(edge => {
+            edge.id = JSON.stringify({
+                from: edge.from,
+                to: edge.to,
+            })
+            return edge
+        })
+)
 const links = computed(
     () => props.edges
-        .map(edge => ({
-            source: edge.from,
-            target: edge.to,
-        }))
+        .map(edge => {
+            edge.source = edge.from
+            edge.target = edge.to
+            return edge
+        })
 )
 const options = computed(() => props.options)
 
@@ -32,7 +42,8 @@ defineExpose({ setData });
 </script>
 
 <template>
-    <ForceGraph3D ref="RefGraph" v-if=props.d3 :nodes=nodes :links=links @NodeClick="(e) => emit('selectNode', e.id)" />
+    <ForceGraph3D ref="RefGraph" v-if=props.d3 :nodes=nodes :links=links @NodeClick="(e) => emit('selectNode', e.id)"
+        @LinkClick="(e) => emit('selectEdge', e.from, e.to)" />
     <VisNetwork ref="RefGraph" v-else :nodes=nodes :edges=edges :options=options
-        @selectNode="(e) => emit('selectNode', e.nodes[0])" />
+        @selectNode="(e) => emit('selectNode', e)" @selectEdge="(e) => emit('selectEdge', e.from, e.to)" />
 </template>
