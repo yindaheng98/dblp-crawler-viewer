@@ -7,5 +7,8 @@ function selectNode(id) {
 function selectEdge(from, to) {
     window.ElectronAPI.send('selectEdge', from, to)
 }
+function onUpdate(callback) {
+    window.ElectronAPI.on('update', callback)
+}
 
-export { getGraphData, selectNode, selectEdge };
+export { getGraphData, selectNode, selectEdge, onUpdate };

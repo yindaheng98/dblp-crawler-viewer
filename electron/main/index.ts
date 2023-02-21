@@ -112,38 +112,20 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
+let summary = null
+
 function load() {
   const selectedFiles = dialog.showOpenDialogSync({
     properties: ['openFile'],
     filters: [
-      { name: 'DBLP Crawler Summary', extensions: ['dcs.js'] }
+      { name: 'DBLP Crawler Summary', extensions: ['json'] }
     ]
   });
   if (!selectedFiles || selectedFiles.length <= 0) return;
   const selectedFile = selectedFiles[0];
   console.log(`File specified: ${selectedFile}`);
-  if (selectedFile.slice(-6) === 'dcs.js') {
-    let data,
-      person_data,
-      pub_data,
-      ccfpie_data,
-      conpie_data,
-      line_data,
-      cat_data,
-      ranking_data;
-    let bin = readFileSync(selectedFile, { encoding: "utf8" }).replace(/\nlet /g, '').replace(/^let /g, '')
-    eval(bin);
-    console.log(`Sending: ${selectedFile}`);
-    win?.webContents.send('dblp-crawler',
-      data,
-      person_data,
-      pub_data,
-      ccfpie_data,
-      conpie_data,
-      line_data,
-      cat_data,
-      ranking_data);
-  }
+  summary = JSON.parse(readFileSync(selectedFile, { encoding: "utf8" }));
+  win?.webContents.send('update');
 }
 
 const menuTemplate = [
@@ -180,28 +162,18 @@ const menuTemplate = [
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
+import { parse_summary } from './parse'
+
 ipcMain.handle('getGraphData', () => {
   console.log('getGraphData')
-  const nodes = [
-    { id: 1, label: 'circle', shape: 'circle' },
-    { id: 2, label: 'ellipse', shape: 'ellipse' },
-    { id: 3, label: 'database', shape: 'database' },
-    { id: 4, label: 'box', shape: 'box' },
-    { id: 5, label: 'diamond', shape: 'diamond' },
-    { id: 6, label: 'dot', shape: 'dot' },
-    { id: 7, label: 'square', shape: 'square' },
-    { id: 8, label: 'triangle', shape: 'triangle' },
-  ]
-  const edges = [
-    { from: 1, to: 2 },
-    { from: 2, to: 3 },
-    { from: 2, to: 4 },
-    { from: 2, to: 5 },
-    { from: 5, to: 6 },
-    { from: 5, to: 7 },
-    { from: 6, to: 8 }
-  ]
-  return [nodes, edges];
+  if (summary === null) {
+    return [[
+      { id: 1, label: 'No data', shape: 'circle' },
+      { id: 2, label: 'Please open a summary file', shape: 'box' },
+    ], [{ from: 1, to: 2 }]]
+  }
+  const data = parse_summary(summary)
+  return [data.nodes, data.edges];
 })
 
 ipcMain.on('selectNode', (event, ...args: any[]) => {
