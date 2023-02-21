@@ -1,5 +1,8 @@
 async function getGraphData() {
-    return await window.ElectronAPI.invoke('getGraphData')
+    console.log("Fetching data")
+    const data =  await window.ElectronAPI.invoke('getGraphData')
+    console.log(data)
+    return data
 }
 function selectNode(id) {
     window.ElectronAPI.send('selectNode', id)
