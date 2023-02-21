@@ -30,4 +30,30 @@ function parse_graph(summary) {
     return { nodes: nodes, edges: edges }
 }
 
-export { parse_graph }
+function _parse_ranking(summary, parse_node_data) {
+    const nodes = summary.nodes
+        .map((node) => ({
+            id: node.id,
+            label: node.label,
+            data: parse_node_data(node),
+        }))
+        .sort((a, b) => a.data.value - b.data.value);
+    const id = nodes.map((node) => node.id);
+    const label = nodes.map((node) => node.label);
+    const data = nodes.map((node) => node.data);
+    return { id: id, label: label, data: data }
+}
+
+function parse_ranking(summary, parse_node_data) {
+    const id = ['error'];
+    const label = ['error'];
+    const data = [{ value: 0, itemStyle: { color: "red" } }]
+    try {
+        return _parse_ranking(summary, parse_node_data)
+    } catch (error) {
+        console.log(error)
+    }
+    return { id: id, label: label, data: data }
+}
+
+export { parse_graph, parse_ranking }

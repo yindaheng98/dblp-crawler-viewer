@@ -1,6 +1,18 @@
 async function getGraphData() {
-    console.log("Fetching data")
-    const data =  await window.ElectronAPI.invoke('getGraphData')
+    console.log("Fetching GraphData")
+    const data = await window.ElectronAPI.invoke('getGraphData')
+    console.log(data)
+    return data
+}
+async function getRankingData_byAllPublications() {
+    console.log("Fetching RankingData")
+    const data = await window.ElectronAPI.invoke('getRankingData', 'byAllPublications')
+    console.log(data)
+    return data
+}
+async function getRankingData() {
+    console.log("Fetching RankingData")
+    const data = await window.ElectronAPI.invoke('getRankingData')
     console.log(data)
     return data
 }
@@ -14,4 +26,4 @@ function onUpdate(callback) {
     window.ElectronAPI.on('update', callback)
 }
 
-export { getGraphData, selectNode, selectEdge, onUpdate };
+export { getGraphData, getRankingData, getRankingData_byAllPublications, selectNode, selectEdge, onUpdate };

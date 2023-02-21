@@ -140,6 +140,7 @@ const menuTemplate = [
   },
   {
     label: 'Ranking',
+    click: () => createWindow('indexRanking.html', '3D Graph'),
   },
   {
     role: 'Close'
@@ -149,7 +150,7 @@ const menuTemplate = [
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
-import { parse_graph } from './parse'
+import { parse_graph, parse_ranking } from './parse'
 
 ipcMain.handle('getGraphData', () => {
   console.log('getGraphData')
@@ -161,6 +162,24 @@ ipcMain.handle('getGraphData', () => {
   }
   const data = parse_graph(summary)
   return [data.nodes, data.edges];
+})
+
+ipcMain.handle('getRankingData', (e, typ) => {
+  console.log('getRankingData')
+  if (summary === null) {
+    return {
+      id: ['No data'],
+      label: ['No data, Please open a summary file'],
+      data: [{ value: 0, itemStyle: { color: "red" } }]
+    }
+  }
+  if (typ === 'byAllPublications')
+    return parse_ranking(summary, (node) => ({
+      value: node.person.publications.length
+    }));
+  return parse_ranking(summary, (node) => ({
+    value: node.publications.length
+  }));
 })
 
 let currentNode = 0
