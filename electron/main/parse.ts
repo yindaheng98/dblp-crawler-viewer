@@ -1,4 +1,4 @@
-function _parse_summary(summary) {
+function _parse_graph(summary) {
     const nodes = summary.nodes.map(
         (node) => ({
             "id": node.id,
@@ -16,18 +16,18 @@ function _parse_summary(summary) {
     return { nodes: nodes, edges: edges }
 }
 
-function parse_summary(summary) {
+function parse_graph(summary) {
     const nodes = [
         { id: 1, label: 'Error', shape: 'circle' },
         { id: 2, label: 'Something wrong', shape: 'box' },
     ];
     const edges = [{ from: 1, to: 2 }];
     try {
-        return _parse_summary(summary)
+        return _parse_graph(summary)
     } catch (error) {
         console.log(error)
     }
     return { nodes: nodes, edges: edges }
 }
 
-export { parse_summary }
+export { parse_graph }

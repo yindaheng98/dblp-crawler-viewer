@@ -149,7 +149,7 @@ const menuTemplate = [
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
-import { parse_summary } from './parse'
+import { parse_graph } from './parse'
 
 ipcMain.handle('getGraphData', () => {
   console.log('getGraphData')
@@ -159,14 +159,20 @@ ipcMain.handle('getGraphData', () => {
       { id: 2, label: 'Please open a summary file', shape: 'box' },
     ], [{ from: 1, to: 2 }]]
   }
-  const data = parse_summary(summary)
+  const data = parse_graph(summary)
   return [data.nodes, data.edges];
 })
 
-ipcMain.on('selectNode', (event, ...args: any[]) => {
-  console.log('selectNode', args)
+let currentNode = 0
+ipcMain.on('selectNode', (event, id) => {
+  console.log('selectNode', id)
+  currentNode = id
 })
 
-ipcMain.on('selectEdge', (event, ...args: any[]) => {
-  console.log('selectEdge', args)
+let currentFrom = 0
+let currentTo = 0
+ipcMain.on('selectEdge', (event, from, to) => {
+  console.log('selectEdge', from, to)
+  currentFrom = from
+  currentTo = to
 })
