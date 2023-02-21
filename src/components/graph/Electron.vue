@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Graph from '../graph/Graph.vue'
+import Graph from './base/Graph.vue'
 import { getGraphData, selectNode, selectEdge, onUpdate } from '../../api/electron'
 
 const props = defineProps<{ d3: boolean }>();
