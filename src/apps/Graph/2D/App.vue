@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Electron from './components/graph/Electron.vue'
+import Electron from '../../../components/graph/Electron.vue'
 </script>
 
 <template>
