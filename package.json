@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "3d-force-graph": "^1.71.1",
-    "vis-network": "^9.1.2"
+    "echarts": "^5.4.1",
+    "vis-network": "^9.1.2",
+    "vue-echarts": "^6.5.4"
   }
 }
