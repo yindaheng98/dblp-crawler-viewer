@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Local from './components/visualize/Local.vue'
+import Electron from './components/visualize/Electron.vue'
 
 function showEvent(...payload) {
   console.log(payload)
@@ -7,5 +7,5 @@ function showEvent(...payload) {
 </script>
 
 <template>
-  <Local :d3=true @selectNode="showEvent" @selectEdge="showEvent" />
+  <Electron :d3=true @selectNode="showEvent" @selectEdge="showEvent" />
 </template>
