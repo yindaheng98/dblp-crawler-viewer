@@ -11,7 +11,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { onMounted, ref, provide } from 'vue';
-import { getRankingData, getRankingData_byAllPublications, onUpdate } from '../../../api/electron'
+import { getRankingData, getRankingData_byAllPublications, onUpdate } from '../../api'
 
 use([
     CanvasRenderer,

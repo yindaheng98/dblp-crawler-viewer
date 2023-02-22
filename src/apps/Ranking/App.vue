@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Electron from '../../components/echarts/ranking/Electron.vue'
+import Ranking from '../../components/echarts/Ranking.vue'
 </script>
 
 <template>
-  <Electron :byAllPublications=false />
+  <Ranking :byAllPublications=false />
 </template>

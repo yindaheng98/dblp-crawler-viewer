@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Electron from '../../../components/graph/Electron.vue'
+import Graph from '../../../components/graph/App.vue'
 </script>
 
 <template>
-  <Electron :d3=false />
+  <Graph :d3=false />
 </template>
