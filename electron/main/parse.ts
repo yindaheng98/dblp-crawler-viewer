@@ -16,7 +16,7 @@ function _parse_graph(summary) {
     return { nodes: nodes, edges: edges }
 }
 
-function parse_graph(summary) {
+export function parse_graph(summary) {
     const nodes = [
         { id: 1, label: 'Error', shape: 'circle' },
         { id: 2, label: 'Something wrong', shape: 'box' },
@@ -44,7 +44,7 @@ function _parse_ranking(summary, parse_node_data) {
     return { id: id, label: label, data: data }
 }
 
-function parse_ranking(summary, parse_node_data) {
+export function parse_ranking(summary, parse_node_data) {
     const id = ['error'];
     const label = ['error'];
     const data = [{ value: 0, itemStyle: { color: "red" } }]
@@ -56,4 +56,17 @@ function parse_ranking(summary, parse_node_data) {
     return { id: id, label: label, data: data }
 }
 
-export { parse_graph, parse_ranking }
+export function parse_node_ccf(summary, id: string) {
+    return [{ "name": "No data", "value": 1 }]
+}
+
+export function parse_node_conf(summary, id: string) {
+    return [{ "name": "No data", "value": 1 }]
+}
+export function parse_edge_ccf(summary, from: string, to: string) {
+    return [{ "name": "No data", "value": 1 }]
+}
+
+export function parse_edge_conf(summary, from: string, to: string) {
+    return [{ "name": "No data", "value": 1 }]
+}
