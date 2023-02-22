@@ -43,6 +43,7 @@ const indexHtmls = {
   '3D Graph': "src/apps/Graph/3D/index.html",
   'Ranking by selected publications': "src/apps/Ranking/index.html",
   'Ranking by all publications': "src/apps/Ranking/byAllPublications/index.html",
+  'Details': "src/apps/Details/index.html",
 }
 
 async function createWindow(title) {
@@ -192,6 +193,8 @@ ipcMain.handle('getRankingData', (e, typ) => {
 })
 
 import { parse_node_ccf, parse_node_conf } from './parse'
+let isSelectedNode = true
+
 let currentNode = 0
 let nodeCCFDataCache = {}
 let nodeConfDataCache = {}
@@ -200,14 +203,16 @@ ipcMain.on('selectNode', (event, id) => {
   currentNode = id
   nodeCCFDataCache[id] = parse_node_ccf(summary, id)
   nodeConfDataCache[id] = parse_node_conf(summary, id)
+  isSelectedNode = true
+  createWindow('Details')
 })
-ipcMain.on('getSelectedNode', () => currentNode)
-ipcMain.on('getNodeCCFData', (e, id) => {
+ipcMain.handle('getSelectedNode', () => currentNode)
+ipcMain.handle('getNodeCCFData', (e, id) => {
   if (!nodeCCFDataCache[id])
     nodeCCFDataCache[id] = parse_node_ccf(summary, id)
   return nodeCCFDataCache[id]
 })
-ipcMain.on('getNodeConfData', (e, id) => {
+ipcMain.handle('getNodeConfData', (e, id) => {
   if (!nodeConfDataCache[id])
     nodeConfDataCache[id] = parse_node_conf(summary, id)
   return nodeConfDataCache[id]
@@ -218,5 +223,8 @@ ipcMain.on('selectEdge', (event, from, to) => {
   console.log('selectEdge', from, to)
   currentEdge.from = from
   currentEdge.to = to
+  isSelectedNode = false
 })
-ipcMain.on('getSelectedEdge', () => currentEdge)
+ipcMain.handle('getSelectedEdge', () => currentEdge)
+
+ipcMain.on('isSelectedNode', () => isSelectedNode)

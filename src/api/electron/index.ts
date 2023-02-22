@@ -42,3 +42,7 @@ export async function getEdgeCCFData(from: string, to: string) {
 export async function getEdgeConfData(from: string, to: string) {
     return await window.ElectronAPI.invoke('getEdgeConfData', from, to)
 }
+
+export async function isSelectedNode() {
+    return await window.ElectronAPI.invoke('isSelectedNode')
+}
