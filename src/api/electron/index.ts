@@ -1,29 +1,44 @@
-async function getGraphData() {
-    console.log("Fetching GraphData")
-    const data = await window.ElectronAPI.invoke('getGraphData')
-    console.log(data)
-    return data
+export async function getGraphData() {
+    return await window.ElectronAPI.invoke('getGraphData')
 }
-async function getRankingData_byAllPublications() {
-    console.log("Fetching RankingData")
-    const data = await window.ElectronAPI.invoke('getRankingData', 'byAllPublications')
-    console.log(data)
-    return data
+export async function getRankingData_byAllPublications() {
+    return await window.ElectronAPI.invoke('getRankingData', 'byAllPublications')
 }
-async function getRankingData() {
-    console.log("Fetching RankingData")
-    const data = await window.ElectronAPI.invoke('getRankingData')
-    console.log(data)
-    return data
+export async function getRankingData() {
+    return await window.ElectronAPI.invoke('getRankingData')
 }
-function selectNode(id) {
-    window.ElectronAPI.send('selectNode', id)
-}
-function selectEdge(from, to) {
-    window.ElectronAPI.send('selectEdge', from, to)
-}
-function onUpdate(callback) {
+export function onUpdate(callback) {
     window.ElectronAPI.on('update', callback)
 }
 
-export { getGraphData, getRankingData, getRankingData_byAllPublications, selectNode, selectEdge, onUpdate };
+export function selectNode(id) {
+    window.ElectronAPI.send('selectNode', id)
+}
+export function onSelectNode(callback) {
+    window.ElectronAPI.on('selectNode', callback)
+}
+export async function getSelectedNode() {
+    return await window.ElectronAPI.invoke('getSelectedNode')
+}
+export async function getNodeCCFData(id: string) {
+    return await window.ElectronAPI.invoke('getNodeCCFData', id)
+}
+export async function getNodeConfData(id: string) {
+    return await window.ElectronAPI.invoke('getNodeConfData', id)
+}
+
+export function selectEdge(from, to) {
+    window.ElectronAPI.send('selectEdge', from, to)
+}
+export function onSelectEdge(callback) {
+    window.ElectronAPI.on('selectEdge', callback)
+}
+export async function getSelectedEdge() {
+    return await window.ElectronAPI.invoke('getSelectedEdge')
+}
+export async function getEdgeCCFData(from: string, to: string) {
+    return await window.ElectronAPI.invoke('getEdgeCCFData', from, to)
+}
+export async function getEdgeConfData(from: string, to: string) {
+    return await window.ElectronAPI.invoke('getEdgeConfData', from, to)
+}
