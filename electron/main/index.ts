@@ -38,8 +38,15 @@ if (!app.requestSingleInstanceLock()) {
 const wins: { [key: string]: BrowserWindow; } = {}
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
+const indexHtmls = {
+  '2D Graph': "src/apps/Graph/2D/index.html",
+  '3D Graph': "src/apps/Graph/3D/index.html",
+  'Ranking by selected publications': "src/apps/Ranking/index.html",
+  'Ranking by all publications': "src/apps/Ranking/byAllPublications/index.html",
+}
 
-async function createWindow(page, title) {
+async function createWindow(title) {
+  const page = indexHtmls[title]
   if (wins[page] && !wins[page].isDestroyed()) {
     wins[page].focus()
     return
@@ -77,7 +84,7 @@ async function createWindow(page, title) {
   })
 }
 
-app.whenReady().then(() => createWindow("index.html", '2D Graph'))
+app.whenReady().then(() => createWindow('2D Graph'))
 
 app.on('window-all-closed', () => {
   for (let page in wins)
@@ -104,7 +111,7 @@ app.on('activate', () => {
   if (allWindows.length) {
     allWindows[0].focus()
   } else {
-    createWindow('index.html', '2D Graph')
+    createWindow('2D Graph')
   }
 })
 
@@ -133,15 +140,15 @@ const menuTemplate = [
   {
     label: 'Graph',
     submenu: [
-      { label: '2D', click: () => createWindow('index.html', '2D Graph') },
-      { label: '3D', click: () => createWindow('index3D.html', '3D Graph') },
+      { label: '2D', click: () => createWindow('2D Graph') },
+      { label: '3D', click: () => createWindow('3D Graph') },
     ]
   },
   {
     label: 'Ranking',
     submenu: [
-      { label: 'by selected publications', click: () => createWindow('indexRanking.html', 'Ranking by selected publications') },
-      { label: 'by all publications', click: () => createWindow('indexRankingAllPub.html', 'Ranking by all publications') },
+      { label: 'by selected publications', click: () => createWindow('Ranking by selected publications') },
+      { label: 'by all publications', click: () => createWindow('Ranking by all publications') },
     ]
   },
   {
