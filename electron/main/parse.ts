@@ -1,12 +1,12 @@
 function _parse_graph(summary) {
-    const nodes = summary.nodes.map(
+    const nodes = Object.values(summary.nodes).map(
         (node) => ({
             "id": node.id,
             "label": node.label,
             "value": node.publications.length,
         })
     );
-    const edges = summary.edges.map(
+    const edges = Object.values(summary.edges).map(
         (edge) => ({
             "from": edge.from,
             "to": edge.to,
@@ -31,7 +31,7 @@ export function parse_graph(summary) {
 }
 
 function _parse_ranking(summary, parse_node_data) {
-    const nodes = summary.nodes
+    const nodes = Object.values(summary.nodes)
         .map((node) => ({
             id: node.id,
             label: node.label,
@@ -58,8 +58,7 @@ export function parse_ranking(summary, parse_node_data) {
 
 function _parse_node_ccf(summary, id: string) {
     const list = { "A": 0, "B": 0, "C": 0, "N": 0 }
-    summary.nodes
-        .filter(node => (node.id === id))[0].person.publications
+    summary.nodes[id].person.publications
         .map(p => { list[summary.publications[p].ccf]++ })
     return [
         { "name": "A", "value": list["A"] },
