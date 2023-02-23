@@ -20,6 +20,6 @@ onUpdate(update)
 </script>
 
 <template>
-    <CCFPie :key="key" />
+    <CCFPie :data="key" />
     <div>{{ key }}</div>
 </template>
