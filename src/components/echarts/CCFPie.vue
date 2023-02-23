@@ -32,6 +32,7 @@ const option = asyncComputed(async () => {
     let data = [{ "name": "No data", "value": 1 }]
     if (typeof props.data === 'object') data = await getEdgeCCFData(props.data.from, props.data.to)
     else data = await getNodeCCFData(props.data)
+    console.log(data)
     return {
         series: [
             {

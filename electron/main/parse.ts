@@ -56,8 +56,28 @@ export function parse_ranking(summary, parse_node_data) {
     return { id: id, label: label, data: data }
 }
 
+function _parse_node_ccf(summary, id: string) {
+    const list = { "A": 0, "B": 0, "C": 0, "N": 0 }
+    summary.nodes
+        .filter(node => (node.id === id))[0].person.publications
+        .map(p => { list[summary.publications[p].ccf]++ })
+    return [
+        { "name": "A", "value": list["A"] },
+        { "name": "B", "value": list["B"] },
+        { "name": "C", "value": list["C"] },
+        { "name": "N", "value": list["N"] },
+    ]
+
+}
+
 export function parse_node_ccf(summary, id: string) {
-    return [{ "name": "No data", "value": 1 }]
+    const data = [{ "name": "Error", "value": 1 }]
+    try {
+        return _parse_node_ccf(summary, id)
+    } catch (error) {
+        console.log(error)
+    }
+    return data
 }
 
 export function parse_node_conf(summary, id: string) {
