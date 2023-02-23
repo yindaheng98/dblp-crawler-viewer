@@ -1,24 +1,25 @@
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, ref } from "vue";
 import CCFPie from "./CCFPie.vue";
 import { onSelectNode, getSelectedNode, onSelectEdge, getSelectedEdge, isSelectedNode, onUpdate } from '../../api'
 
-const data = reactive({ key: 0 })
+const key = ref(0)
 
 onSelectNode(async () => {
-    data.key = await getSelectedNode()
+    key.value = await getSelectedNode()
 })
 onSelectEdge(async () => {
-    data.key = await getSelectedEdge()
+    key.value = await getSelectedEdge()
 })
 async function update() {
-    if (await isSelectedNode()) data.key = await getSelectedNode()
-    else data.key = await getSelectedEdge()
+    if (await isSelectedNode()) key.value = await getSelectedNode()
+    else key.value = await getSelectedEdge()
 }
 onMounted(update)
 onUpdate(update)
 </script>
 
 <template>
-    <CCFPie :key="data.key" />
+    <CCFPie :key="key" />
+    <div>{{ key }}</div>
 </template>
