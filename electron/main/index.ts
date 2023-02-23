@@ -200,9 +200,14 @@ let nodeCCFDataCache = {}
 let nodeConfDataCache = {}
 ipcMain.on('selectNode', (event, id) => {
   console.log('selectNode', id)
+  if (!nodeCCFDataCache[id])
+    nodeCCFDataCache[id] = parse_node_ccf(summary, id)
+  if (!nodeConfDataCache[id])
+    nodeConfDataCache[id] = parse_node_conf(summary, id)
+  if (currentNode !== id)
+    for (let page in wins)
+      wins[page].webContents.send('selectNode');
   currentNode = id
-  nodeCCFDataCache[id] = parse_node_ccf(summary, id)
-  nodeConfDataCache[id] = parse_node_conf(summary, id)
   isSelectedNode = true
   createWindow('Details')
 })
@@ -227,4 +232,4 @@ ipcMain.on('selectEdge', (event, from, to) => {
 })
 ipcMain.handle('getSelectedEdge', () => currentEdge)
 
-ipcMain.on('isSelectedNode', () => isSelectedNode)
+ipcMain.handle('isSelectedNode', () => isSelectedNode)
