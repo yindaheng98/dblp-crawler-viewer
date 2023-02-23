@@ -11,7 +11,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { provide } from 'vue';
-import { getNodeConfData, getEdgeConfData } from '../../api'
+import { getNodeCCFData, getEdgeCCFData } from '../../api'
 import {asyncComputed} from '@vueuse/core'
 
 use([
@@ -26,12 +26,12 @@ use([
 
 provide(THEME_KEY, "dark");
 
-const props = defineProps<{ key: any }>();
+const props = defineProps<{ data: any }>();
 
 const option = asyncComputed(async () => {
     let data = [{ "name": "No data", "value": 1 }]
-    if (typeof props.key === 'object') data = await getEdgeConfData(props.key.from, props.key.to)
-    else data = await getNodeConfData(props.key)
+    if (typeof props.data === 'object') data = await getEdgeCCFData(props.data.from, props.data.to)
+    else data = await getNodeCCFData(props.data)
     return {
         series: [
             {
