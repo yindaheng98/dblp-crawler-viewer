@@ -3,7 +3,7 @@ function _parse_graph(summary) {
         (node) => ({
             "id": node.id,
             "label": node.label,
-            "value": node.publications.length,
+            "value": node.person.publications.length,
         })
     );
     const edges = Object.values(summary.edges).map(

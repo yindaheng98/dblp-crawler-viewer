@@ -43,8 +43,8 @@ function configure(network: any) {
         .nodeThreeObject(node => {
             const sprite = new SpriteText(node.label);
             sprite.material.depthWrite = false; // make sprite background transparent
-            sprite.color = node.color?node.color:'#FFFFFF';
-            sprite.textHeight = node.value;
+            sprite.color = node.color ? node.color : '#FFFFFF';
+            sprite.textHeight = node.value / 16;
             return sprite;
         })
 }
