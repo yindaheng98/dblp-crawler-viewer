@@ -38,6 +38,7 @@
     "@vueuse/core": "^9.13.0",
     "3d-force-graph": "^1.71.1",
     "echarts": "^5.4.1",
+    "three-spritetext": "^1.7.1",
     "vis-network": "^9.1.2",
     "vue-echarts": "^6.5.4"
   }

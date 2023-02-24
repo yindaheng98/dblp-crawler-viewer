@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
 
-const props = defineProps<{ nodes: object[], links: object[] }>();
+const props = defineProps<{ nodes: object[], links: object[], configure: (arg0: ForceGraph3DInstance) => void }>();
 const emit = defineEmits(['NodeClick', 'LinkClick'])
 
 const visualization = ref(null);
@@ -19,6 +19,7 @@ onMounted(() => {
         network?.width(visualization.value.clientWidth)
         network?.height(visualization.value.clientHeight)
     });
+    props.configure(network)
 })
 function setData(nodes: object[], links: object[]) {
     if (network !== null)

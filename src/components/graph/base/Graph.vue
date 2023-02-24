@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import VisNetwork from './VisNetwork.vue'
 import ForceGraph3D from './3DForceGraph.vue'
+import SpriteText from 'three-spritetext';
 
 const props = defineProps<{ d3: boolean, nodes: object[], edges: object[], options: object }>();
 const emit = defineEmits(['selectNode', 'selectEdge'])
@@ -25,7 +26,28 @@ const links = computed(
             return edge
         })
 )
-const options = computed(() => props.options)
+const options = {
+    nodes: {
+        shape: "circle",
+        scaling: {
+            label: {
+                min: 0,
+                max: 25,
+            },
+        },
+    },
+}
+function configure(network: any) {
+    network
+        .linkColor(() => '#FFFFFF')
+        .nodeThreeObject(node => {
+            const sprite = new SpriteText(node.label);
+            sprite.material.depthWrite = false; // make sprite background transparent
+            sprite.color = node.color?node.color:'#FFFFFF';
+            sprite.textHeight = node.value;
+            return sprite;
+        })
+}
 
 const RefGraph = ref(null)
 function setData(nodes: object[], edges: object[]) {
@@ -50,8 +72,8 @@ defineExpose({ setData });
 </script>
 
 <template>
-    <ForceGraph3D ref="RefGraph" v-if=props.d3 :nodes=nodes :links=links @NodeClick="(e) => emit('selectNode', e.id)"
-        @LinkClick="(e) => emit('selectEdge', e.source.id, e.target.id)" />
-    <VisNetwork ref="RefGraph" v-else :nodes=nodes :edges=edges :options=options
-        @selectNode="(e) => emit('selectNode', e)" @selectEdge="(e) => emit('selectEdge', e.from, e.to)" />
+    <ForceGraph3D ref="RefGraph" v-if=props.d3 :nodes=nodes :links=links :configure=configure
+        @NodeClick="(e) => emit('selectNode', e.id)" @LinkClick="(e) => emit('selectEdge', e.source.id, e.target.id)" />
+    <VisNetwork ref="RefGraph" v-else :nodes=nodes :edges=edges :options=options @selectNode="(e) => emit('selectNode', e)"
+        @selectEdge="(e) => emit('selectEdge', e.from, e.to)" />
 </template>
