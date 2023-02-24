@@ -66,7 +66,6 @@ function _parse_node_ccf(summary, id: string) {
         { "name": "C", "value": list["C"] },
         { "name": "N", "value": list["N"] },
     ]
-
 }
 
 export function parse_node_ccf(summary, id: string) {
@@ -79,8 +78,32 @@ export function parse_node_ccf(summary, id: string) {
     return data
 }
 
+function _parse_node_conf(summary, id: string) {
+    const list = { "A": {}, "B": {}, "C": {}, "N": {} }
+    summary.nodes[id].person.publications
+        .map(p => {
+            const ccf = summary.publications[p].ccf
+            const journal = summary.publications[p].journal
+            if (!list[ccf][journal]) list[ccf][journal] = 0
+            list[ccf][journal]++
+        })
+    const data = []
+    for (let ccf of ["A", "B", "C", "N"])
+        Object.keys(list[ccf])
+            .map(journal => ({ "name": journal, "value": list[ccf][journal] }))
+            .sort((a, b) => b.value - a.value)
+            .map(item => { data.push(item) })
+    return data
+}
+
 export function parse_node_conf(summary, id: string) {
-    return [{ "name": "No data", "value": 1 }]
+    const data = [{ "name": "Error", "value": 1 }]
+    try {
+        return _parse_node_conf(summary, id)
+    } catch (error) {
+        console.log(error)
+    }
+    return data
 }
 export function parse_edge_ccf(summary, from: string, to: string) {
     return [{ "name": "No data", "value": 1 }]
