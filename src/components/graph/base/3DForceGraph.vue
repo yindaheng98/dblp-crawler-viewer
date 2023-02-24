@@ -15,6 +15,10 @@ onMounted(() => {
     });
     network.onNodeClick((node) => emit('NodeClick', node))
     network.onLinkClick((link) => emit('LinkClick', link))
+    window.addEventListener('resize', () => {
+        network?.width(visualization.value.clientWidth)
+        network?.height(visualization.value.clientHeight)
+    });
 })
 function setData(nodes: object[], links: object[]) {
     if (network !== null)

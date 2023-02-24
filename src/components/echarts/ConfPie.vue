@@ -48,5 +48,5 @@ const option = asyncComputed(async () => {
 </script>
 
 <template>
-    <VChart :option="option" />
+    <VChart :option="option" autoresize />
 </template>
