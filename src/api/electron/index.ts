@@ -26,6 +26,9 @@ export async function getNodeCCFData(id: string) {
 export async function getNodeConfData(id: string) {
     return await window.ElectronAPI.invoke('getNodeConfData', id)
 }
+export async function getNodeLineData(id: string) {
+    return await window.ElectronAPI.invoke('getNodeLineData', id)
+}
 
 export function selectEdge(from, to) {
     window.ElectronAPI.send('selectEdge', from, to)
@@ -41,6 +44,9 @@ export async function getEdgeCCFData(from: string, to: string) {
 }
 export async function getEdgeConfData(from: string, to: string) {
     return await window.ElectronAPI.invoke('getEdgeConfData', from, to)
+}
+export async function getEdgeLineData(from: string, to: string) {
+    return await window.ElectronAPI.invoke('getEdgeLineData', from, to)
 }
 
 export async function isSelectedNode() {

@@ -192,18 +192,21 @@ ipcMain.handle('getRankingData', (e, typ) => {
   }));
 })
 
-import { parse_node_ccf, parse_node_conf } from './parse'
+import { parse_node_ccf, parse_node_conf, parse_node_line } from './parse'
 let isSelectedNode = true
 
 let currentNode = 0
 let nodeCCFDataCache = {}
 let nodeConfDataCache = {}
+let nodeLineDataCache = {}
 ipcMain.on('selectNode', (event, id) => {
   console.log('selectNode', id)
   if (!nodeCCFDataCache[id])
     nodeCCFDataCache[id] = parse_node_ccf(summary, id)
   if (!nodeConfDataCache[id])
     nodeConfDataCache[id] = parse_node_conf(summary, id)
+    if (!nodeLineDataCache[id])
+    nodeLineDataCache[id] = parse_node_line(summary, id)
   isSelectedNode = true
   if (currentNode !== id) {
     currentNode = id
@@ -224,6 +227,12 @@ ipcMain.handle('getNodeConfData', (e, id) => {
   if (!nodeConfDataCache[id])
     nodeConfDataCache[id] = parse_node_conf(summary, id)
   return nodeConfDataCache[id]
+})
+ipcMain.handle('getNodeLineData', (e, id) => {
+  console.log('getNodeLineData', id)
+  if (!nodeLineDataCache[id])
+  nodeLineDataCache[id] = parse_node_line(summary, id)
+  return nodeLineDataCache[id]
 })
 
 let currentEdge = { from: 0, to: 1 }

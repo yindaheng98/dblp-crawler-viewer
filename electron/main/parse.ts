@@ -59,7 +59,7 @@ export function parse_ranking(summary, parse_node_data) {
 function _parse_node_ccf(summary, id: string) {
     const list = { "A": 0, "B": 0, "C": 0, "N": 0 }
     summary.nodes[id].person.publications
-        .map(p => { list[summary.publications[p].ccf]++ })
+        .forEach(p => { list[summary.publications[p].ccf]++ })
     return [
         { "name": "A", "value": list["A"] },
         { "name": "B", "value": list["B"] },
@@ -81,7 +81,7 @@ export function parse_node_ccf(summary, id: string) {
 function _parse_node_conf(summary, id: string) {
     const list = { "A": {}, "B": {}, "C": {}, "N": {} }
     summary.nodes[id].person.publications
-        .map(p => {
+        .forEach(p => {
             const ccf = summary.publications[p].ccf
             const journal = summary.publications[p].journal
             if (!list[ccf][journal]) list[ccf][journal] = 0
@@ -92,7 +92,7 @@ function _parse_node_conf(summary, id: string) {
         Object.keys(list[ccf])
             .map(journal => ({ "name": journal, "value": list[ccf][journal] }))
             .sort((a, b) => b.value - a.value)
-            .map(item => { data.push(item) })
+            .forEach(item => { data.push(item) })
     return data
 }
 
@@ -105,6 +105,38 @@ export function parse_node_conf(summary, id: string) {
     }
     return data
 }
+
+function _parse_node_line(summary, id: string) {
+    let min_year = 9999
+    let max_year = 0
+    summary.nodes[id].person.publications
+        .forEach(p => {
+            const year = summary.publications[p].year
+            min_year = year < min_year ? year : min_year
+            max_year = year > max_year ? year : max_year
+        })
+    const years = []
+    for (let year = min_year; year <= max_year; year++)
+        years.push(year)
+    const list = {}
+    years.forEach(year => { list[year] = { "A": 0, "B": 0, "C": 0, "N": 0 } })
+    summary.nodes[id].person.publications
+        .forEach(p => { list[summary.publications[p].year][summary.publications[p].ccf]++ })
+    const data = { "A": [], "B": [], "C": [], "N": [], "years": years }
+    years.map(year => { for (let ccf of ["A", "B", "C", "N"]) data[ccf].push(list[year][ccf]) })
+    return data
+}
+
+export function parse_node_line(summary, id: string) {
+    const data = { "A": [0], "B": [0], "C": [0], "N": [0], "years": [0] }
+    try {
+        return _parse_node_line(summary, id)
+    } catch (error) {
+        console.log(error)
+    }
+    return data
+}
+
 export function parse_edge_ccf(summary, from: string, to: string) {
     return [{ "name": "No data", "value": 1 }]
 }
