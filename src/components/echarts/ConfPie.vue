@@ -11,7 +11,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { provide } from 'vue';
-import { getNodeCCFData, getEdgeCCFData } from '../../api'
+import { getNodeConfData, getEdgeConfData } from '../../api'
 import {asyncComputed} from '@vueuse/core'
 
 use([
@@ -30,8 +30,8 @@ const props = defineProps<{ data: any }>();
 
 const option = asyncComputed(async () => {
     let data = [{ "name": "No data", "value": 1 }]
-    if (typeof props.data === 'object') data = await getEdgeCCFData(props.data.from, props.data.to)
-    else data = await getNodeCCFData(props.data)
+    if (typeof props.data === 'object') data = await getEdgeConfData(props.data.from, props.data.to)
+    else data = await getNodeConfData(props.data)
     console.log(data)
     return {
         series: [
@@ -39,8 +39,7 @@ const option = asyncComputed(async () => {
                 type: "pie",
                 data: data,
                 label: {
-                    formatter: 'CCF {b}: {c}篇',
-                    position: 'inside'
+                    formatter: '{b}: {c}篇'
                 }
             }
         ]
