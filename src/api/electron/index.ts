@@ -56,3 +56,14 @@ export async function isSelectedNode() {
 export function selectPublications(id, rule) {
     window.ElectronAPI.send('selectPublications', id, rule)
 }
+export function onSelectPublications(callback) {
+    window.ElectronAPI.on('selectPublications', callback)
+}
+/* TODO: getPublicationRule() then getPublications(id, rule)
+export async function getPublicationRule() {
+    return await window.ElectronAPI.invoke('getPublicationRule')
+}
+*/
+export async function getPublications() {
+    return await window.ElectronAPI.invoke('getPublications')
+}

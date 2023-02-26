@@ -137,6 +137,32 @@ export function parse_node_line(summary, id: string) {
     return data
 }
 
+function _parse_node_publications(summary, id: string, rule: object) {
+    const publications = []
+    for (let p of summary.nodes[id].person.publications) {
+        const publication = summary.publications[p]
+        let match = true
+        for (let key in rule)
+            if (publication[key] !== rule[key]) {
+                match = false
+                break
+            }
+        if (match) publications.push(publication)
+    }
+    return publications.sort((a, b) => a.year - b.year)
+}
+
+export function parse_node_publications(summary, id: string, rule: object) {
+    const data = [{ title: "Error", journal: "Error", year: 0 }]
+    try {
+        return _parse_node_publications(summary, id, rule)
+    } catch (error) {
+        console.log(error)
+    }
+    return data
+}
+
+
 export function parse_edge_ccf(summary, from: string, to: string) {
     return [{ "name": "No data", "value": 1 }]
 }

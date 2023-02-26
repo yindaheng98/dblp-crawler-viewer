@@ -44,6 +44,7 @@ const indexHtmls = {
   'Ranking by selected publications': "src/apps/Ranking/index.html",
   'Ranking by all publications': "src/apps/Ranking/byAllPublications/index.html",
   'Details': "src/apps/Details/index.html",
+  'Publications': "src/apps/Publications/index.html",
 }
 
 async function createWindow(title) {
@@ -247,8 +248,16 @@ ipcMain.handle('getSelectedEdge', () => currentEdge)
 ipcMain.handle('isSelectedNode', () => isSelectedNode)
 
 
+import { parse_node_publications } from './parse'
 let publications = {}
 ipcMain.on('selectPublications', (event, id, rule) => {
   console.log('selectPublications', id, rule)
+  publications = parse_node_publications(summary, id, rule)
+  for (let page in wins)
+    wins[page].webContents.send('selectPublications');
+  createWindow('Publications')
 })
-ipcMain.handle('getPublications', () => publications)
+ipcMain.handle('getPublications', () => {
+  console.log('getPublications')
+  return publications
+})
