@@ -149,7 +149,11 @@ function _parse_node_publications(summary, id: string, rule: object) {
             }
         if (match) publications.push(publication)
     }
-    return publications.sort((a, b) => a.year - b.year)
+    return publications.sort((a, b) => {
+        const year = b.year - a.year
+        if (year !== 0) return year
+        return a > b ? 1 : -1
+    })
 }
 
 export function parse_node_publications(summary, id: string, rule: object) {

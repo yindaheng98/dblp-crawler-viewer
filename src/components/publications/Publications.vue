@@ -13,5 +13,9 @@ onSelectPublications(update)
 </script>
 
 <template>
-    {{ publications }}
+    <table style="text-align: left">
+        <tr v-for="p in publications">
+            <td>{{ p.authors }}, {{ p.title }}, {{ p.journal }}, {{ p.year }}</td>
+        </tr>
+    </table>
 </template>
