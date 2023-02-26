@@ -25,11 +25,11 @@ onUpdate(update)
 
 <template>
     <div style="height: 49%; width: 100%">
-        <CCFPie v-if="loaded" :data="key" @select="(name) => selectPublications({ ccf: name })"
+        <CCFPie v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: name })"
             style="height: 100%; width: 49%; float:left" />
-        <ConfPie v-if="loaded" :data="key" @select="(name) => selectPublications({ journal: name })"
+        <ConfPie v-if="loaded" :data="key" @select="(name) => selectPublications(key, { journal: name })"
             style="height: 100%; width: 49%; float:right" />
     </div>
-    <Line v-if="loaded" :data="key" @select="(year, ccf) => selectPublications({ year: year, ccf: ccf })"
+    <Line v-if="loaded" :data="key" @select="(year, ccf) => selectPublications(key, { year: year, ccf: ccf })"
         style="height: 49%; width: 100%" />
 </template>

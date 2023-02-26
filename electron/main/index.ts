@@ -246,6 +246,9 @@ ipcMain.handle('getSelectedEdge', () => currentEdge)
 
 ipcMain.handle('isSelectedNode', () => isSelectedNode)
 
-ipcMain.on('selectPublications', (event, rule) => {
-  console.log('selectPublications', rule)
+
+let publications = {}
+ipcMain.on('selectPublications', (event, id, rule) => {
+  console.log('selectPublications', id, rule)
 })
+ipcMain.handle('getPublications', () => publications)

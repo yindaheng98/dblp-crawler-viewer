@@ -53,6 +53,6 @@ export async function isSelectedNode() {
     return await window.ElectronAPI.invoke('isSelectedNode')
 }
 
-export function selectPublications(rule) {
-    window.ElectronAPI.send('selectPublications', rule)
+export function selectPublications(id, rule) {
+    window.ElectronAPI.send('selectPublications', id, rule)
 }
