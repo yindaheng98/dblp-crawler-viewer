@@ -45,6 +45,7 @@ const indexHtmls = {
   'Ranking by all publications': "src/apps/Ranking/byAllPublications/index.html",
   'Details': "src/apps/Details/index.html",
   'Publications': "src/apps/Publications/index.html",
+  'Home': "src/apps/Home/index.html",
 }
 
 async function createWindow(title) {
@@ -86,7 +87,7 @@ async function createWindow(title) {
   })
 }
 
-app.whenReady().then(() => createWindow('2D Graph'))
+app.whenReady().then(() => createWindow('Home'))
 
 app.on('window-all-closed', () => {
   for (let page in wins)
@@ -100,11 +101,16 @@ app.on('second-instance', () => {
     // Focus on the main window if the user tried to open another
     if (win.isMinimized()) win.restore()
   }
-  if (wins['index.html']) {
+  if (wins[indexHtmls['2D Graph']]) {
     // Focus on the main window if the user tried to open another
-    wins['index.html'].focus()
-  } else if (wins['index3D.html']) {
-    wins['index3D.html'].focus()
+    wins[indexHtmls['2D Graph']].focus()
+  } else if (wins[indexHtmls['3D Graph']]) {
+    wins[indexHtmls['3D Graph']].focus()
+  } else {
+    const allWindows = BrowserWindow.getAllWindows()
+    if (allWindows.length) {
+      allWindows[0].focus()
+    }
   }
 })
 
@@ -113,7 +119,7 @@ app.on('activate', () => {
   if (allWindows.length) {
     allWindows[0].focus()
   } else {
-    createWindow('2D Graph')
+    createWindow('Home')
   }
 })
 
@@ -132,7 +138,13 @@ function load() {
   summary = JSON.parse(readFileSync(selectedFile, { encoding: "utf8" }));
   for (let page in wins)
     wins[page].webContents.send('update');
+  if (wins[indexHtmls['Home']])
+    wins[indexHtmls['Home']].close()
+  if (!(wins[indexHtmls['2D Graph']] || wins[indexHtmls['3D Graph']]))
+    createWindow('2D Graph')
 }
+
+ipcMain.on('load', load)
 
 const menuTemplate = [
   {

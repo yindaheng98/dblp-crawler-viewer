@@ -1,3 +1,6 @@
+export async function load() {
+    return await window.ElectronAPI.send('load')
+}
 export async function getGraphData() {
     return await window.ElectronAPI.invoke('getGraphData')
 }
