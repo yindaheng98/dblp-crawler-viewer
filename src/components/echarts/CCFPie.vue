@@ -12,7 +12,7 @@ import {
 import VChart, { THEME_KEY } from "vue-echarts";
 import { provide } from 'vue';
 import { getNodeCCFData, getEdgeCCFData } from '../../api'
-import {asyncComputed} from '@vueuse/core'
+import { asyncComputed } from '@vueuse/core'
 
 use([
     CanvasRenderer,
@@ -27,6 +27,7 @@ use([
 provide(THEME_KEY, "dark");
 
 const props = defineProps<{ data: any }>();
+const emit = defineEmits(['select'])
 
 const option = asyncComputed(async () => {
     let data = [{ "name": "No data", "value": 1 }]
@@ -49,5 +50,5 @@ const option = asyncComputed(async () => {
 </script>
 
 <template>
-    <VChart :option="option" autoresize />
+    <VChart :option="option" @click="(e) => emit('select', e.name)" autoresize />
 </template>

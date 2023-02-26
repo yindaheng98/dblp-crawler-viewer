@@ -205,7 +205,7 @@ ipcMain.on('selectNode', (event, id) => {
     nodeCCFDataCache[id] = parse_node_ccf(summary, id)
   if (!nodeConfDataCache[id])
     nodeConfDataCache[id] = parse_node_conf(summary, id)
-    if (!nodeLineDataCache[id])
+  if (!nodeLineDataCache[id])
     nodeLineDataCache[id] = parse_node_line(summary, id)
   isSelectedNode = true
   if (currentNode !== id) {
@@ -231,7 +231,7 @@ ipcMain.handle('getNodeConfData', (e, id) => {
 ipcMain.handle('getNodeLineData', (e, id) => {
   console.log('getNodeLineData', id)
   if (!nodeLineDataCache[id])
-  nodeLineDataCache[id] = parse_node_line(summary, id)
+    nodeLineDataCache[id] = parse_node_line(summary, id)
   return nodeLineDataCache[id]
 })
 
@@ -245,3 +245,7 @@ ipcMain.on('selectEdge', (event, from, to) => {
 ipcMain.handle('getSelectedEdge', () => currentEdge)
 
 ipcMain.handle('isSelectedNode', () => isSelectedNode)
+
+ipcMain.on('selectPublications', (event, rule) => {
+  console.log('selectPublications', rule)
+})

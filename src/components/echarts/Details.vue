@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue";
 import CCFPie from "./CCFPie.vue";
 import ConfPie from "./ConfPie.vue";
 import Line from "./Line.vue";
-import { onSelectNode, getSelectedNode, onSelectEdge, getSelectedEdge, isSelectedNode, onUpdate } from '../../api'
+import { onSelectNode, getSelectedNode, onSelectEdge, getSelectedEdge, isSelectedNode, onUpdate, selectPublications } from '../../api'
 
 const key = ref(0)
 const loaded = ref(false)
@@ -25,8 +25,10 @@ onUpdate(update)
 
 <template>
     <div style="height: 49%; width: 100%">
-        <CCFPie v-if="loaded" :data="key" style="height: 100%; width: 49%; float:left" />
-        <ConfPie v-if="loaded" :data="key" style="height: 100%; width: 49%; float:right" />
+        <CCFPie v-if="loaded" :data="key" @select="(name) => selectPublications({ ccf: name })"
+            style="height: 100%; width: 49%; float:left" />
+        <ConfPie v-if="loaded" :data="key" @select="(name) => selectPublications({ journal: name })"
+            style="height: 100%; width: 49%; float:right" />
     </div>
     <Line v-if="loaded" :data="key" style="height: 49%; width: 100%" />
 </template>
