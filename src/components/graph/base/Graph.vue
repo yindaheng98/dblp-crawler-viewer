@@ -28,13 +28,10 @@ const links = computed(
 )
 const options = {
     nodes: {
-        shape: "circle",
-        scaling: {
-            label: {
-                min: 0,
-                max: 25,
-            },
-        },
+        shape: "dot",
+        font: {
+            color: '#FFFFFF',
+        }
     },
 }
 function configure(network: any) {
