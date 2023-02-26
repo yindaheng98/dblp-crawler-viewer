@@ -30,5 +30,6 @@ onUpdate(update)
         <ConfPie v-if="loaded" :data="key" @select="(name) => selectPublications({ journal: name })"
             style="height: 100%; width: 49%; float:right" />
     </div>
-    <Line v-if="loaded" :data="key" style="height: 49%; width: 100%" />
+    <Line v-if="loaded" :data="key" @select="(year, ccf) => selectPublications({ year: year, ccf: ccf })"
+        style="height: 49%; width: 100%" />
 </template>
