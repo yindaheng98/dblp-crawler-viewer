@@ -146,32 +146,7 @@ function load() {
 
 ipcMain.on('load', load)
 
-const menuTemplate = [
-  {
-    label: 'Open',
-    click: load,
-  },
-  {
-    label: 'Graph',
-    submenu: [
-      { label: '2D', click: () => createWindow('2D Graph') },
-      { label: '3D', click: () => createWindow('3D Graph') },
-    ]
-  },
-  {
-    label: 'Ranking',
-    submenu: [
-      { label: 'by selected publications', click: () => createWindow('Ranking by selected publications') },
-      { label: 'by all publications', click: () => createWindow('Ranking by all publications') },
-    ]
-  },
-  {
-    role: 'Close'
-  }
-]
-
-const menu = Menu.buildFromTemplate(menuTemplate);
-Menu.setApplicationMenu(menu);
+Menu.setApplicationMenu(null)
 
 import { parse_graph, parse_ranking } from './parse'
 

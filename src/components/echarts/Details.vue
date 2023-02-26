@@ -24,12 +24,16 @@ onUpdate(update)
 </script>
 
 <template>
-    <div style="height: 49%; width: 100%">
-        <CCFPie v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: name })"
-            style="height: 100%; width: 49%; float:left" />
-        <ConfPie v-if="loaded" :data="key" @select="(name) => selectPublications(key, { journal: name })"
-            style="height: 100%; width: 49%; float:right" />
+    <div style="height: 50%; width: 100%">
+        <CCFPie :title="'CPU'" :total="100" :unit="'%'" :used="0.61 + Math.random() * 0.1" v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: 'A' })"
+            style="height: 100%; width: 25%; float:left" />
+        <CCFPie :title="'内存'" :total="64" :unit="'G'" :used="0.41 + Math.random() * 0.1" v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: 'A' })"
+            style="height: 100%; width: 25%; float:left" />
+        <CCFPie :title="'GPU'" :total="100" :unit="'%'" :used="0.71 + Math.random() * 0.1" v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: 'A' })"
+            style="height: 100%; width: 25%; float:left" />
+        <CCFPie :title="'显存'" :total="16" :unit="'G'" :used="0.91 + Math.random() * 0.1" v-if="loaded" :data="key" @select="(name) => selectPublications(key, { ccf: 'A' })"
+            style="height: 100%; width: 25%; float:left" />
     </div>
     <Line v-if="loaded" :data="key" @select="(year, ccf) => selectPublications(key, { year: year, ccf: ccf })"
-        style="height: 49%; width: 100%" />
+        style="height: 50%; width: 100%" />
 </template>
