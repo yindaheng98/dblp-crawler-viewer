@@ -26,33 +26,47 @@ for (let i = 0; i < 10; i++) {
     const r1 = Math.floor(Math.random() * resolution.length)
     const r2 = Math.floor(Math.random() * resolution.length)
     streams.push({
-         id: crypto.randomUUID(),
-          lr: resolution[r1 < r2 ? r1 : r2],
-           hr: resolution[r1 > r2 ? r1 : r2],
-            s: status[Math.floor(Math.random() * status.length)],
-            last: last[Math.floor(Math.random() * last.length)],
-            next: next[Math.floor(Math.random() * next.length)],
-         })
+        id: crypto.randomUUID(),
+        lr: resolution[r1 < r2 ? r1 : r2],
+        hr: resolution[r1 > r2 ? r1 : r2],
+        s: status[Math.floor(Math.random() * status.length)],
+        last: last[Math.floor(Math.random() * last.length)],
+        next: next[Math.floor(Math.random() * next.length)],
+    })
 }
 </script>
 
 <template>
     <table style="text-align: left">
-        <tr>
-            <th style="height: 20px!important; width: 200px;">流ID</th>
-            <th style="height: 20px!important; width: 50px;">原始清晰度</th>
-            <th style="height: 20px!important; width: 50px;">终端清晰度</th>
-            <th style="height: 20px!important; width: 50px;">流状态</th>
-            <th style="height: 20px!important; width: 50px;">上一跳节点</th>
-            <th style="height: 20px!important; width: 50px;">下一跳节点</th>
-        </tr>
-        <tr v-for="p in streams">
-            <td style="width: 200px;">{{ p.id }}</td>
-            <td style="width: 50px;">{{ p.lr }}</td>
-            <td style="width: 50px;">{{ p.hr }}</td>
-            <td style="width: 50px;">{{ p.s }}</td>
-            <td style="width: 50px;">{{ p.last }}</td>
-            <td style="width: 50px;">{{ p.next }}</td>
-        </tr>
+        <thead>
+            <tr>
+                <th style="height: 20px!important; width: 200px;">流ID</th>
+                <th style="height: 20px!important; width: 50px;">原始清晰度</th>
+                <th style="height: 20px!important; width: 50px;">终端清晰度</th>
+                <th style="height: 20px!important; width: 50px;">流状态</th>
+                <th style="height: 20px!important; width: 50px;">上一跳节点</th>
+                <th style="height: 20px!important; width: 50px;">下一跳节点</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="p in streams">
+                <td style="width: 200px;">{{ p.id }}</td>
+                <td style="width: 50px;">{{ p.lr }}</td>
+                <td style="width: 50px;">{{ p.hr }}</td>
+                <td style="width: 50px;">{{ p.s }}</td>
+                <td style="width: 50px;">{{ p.last }}</td>
+                <td style="width: 50px;">{{ p.next }}</td>
+            </tr>
+        </tbody>
     </table>
 </template>
+
+<style scoped>
+table,
+td,
+th {
+    text-align: center;
+    border: 1px solid rgb(128, 128, 128);
+    border-collapse: collapse;
+}
+</style>
