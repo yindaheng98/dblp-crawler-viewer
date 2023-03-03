@@ -21,6 +21,7 @@ async function update() {
 }
 onMounted(update)
 onUpdate(update)
+selectPublications(key, { year: 2020, ccf: 'A' })
 </script>
 
 <template>

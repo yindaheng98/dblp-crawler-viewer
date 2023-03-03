@@ -106,7 +106,9 @@ const option = asyncComputed(async () => {
                 data: dates,
             },
             yAxis: {
-                name: '%'
+                name: '比率',
+                max: 1,
+                min: 0,
             },
             series: [
                 {
@@ -116,7 +118,8 @@ const option = asyncComputed(async () => {
                     type: 'line',
                 }
             ]
-        },bandwidth:{
+        },
+        bandwidth: {
             title: {
                 show: true,
                 text: "带宽占用",

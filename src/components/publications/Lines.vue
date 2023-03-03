@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { getPublications, onUpdate, onSelectPublications } from '../../api'
+
+const publications = ref([])
+
+async function update() {
+    publications.value = await getPublications()
+}
+onMounted(update)
+onUpdate(update)
+onSelectPublications(update)
+const resolution = [
+    '360p',
+    '540p',
+    '720p',
+    '1080p',
+    '1440p',
+    '2160p',
+]
+const fresolution = [
+    ['80x90', '160x180', '320x360', '640x360',],
+    ['120x135', '240x270', '480x540', '960x540',],
+    ['160x180', '320x360', '640x720', '1280x720',],
+    ['240x270', '480x540', '960x1080', '1920x1080',],
+    ['320x360', '640x720', '1280x1440', '2560x1440',],
+    ['1920x540', '1920x1080', '1920x2160', '3840x2160',],
+]
+const status = ['仅转发', '正在请求', '计算中']
+const last = ['客户端', '192.168.1.166', '192.168.1.122', '192.168.1.147', '192.168.1.205', '192.168.1.152', '192.168.1.222']
+const next = ['客户端', '192.168.1.166', '192.168.1.122', '192.168.1.147', '192.168.1.205', '192.168.1.152', '192.168.1.222']
+const streams = []
+for (let i = 0; i < 10; i++) {
+    const r1 = Math.floor(Math.random() * resolution.length)
+    const r2 = Math.floor(Math.random() * resolution.length)
+    streams.push({
+        id: crypto.randomUUID(),
+        lr: resolution[Math.min(r1, r2)],
+        hr: resolution[Math.max(r1, r2)],
+        fr: fresolution[Math.floor((r2 + r2) / 2)][Math.floor(Math.random() * 4)],
+        s: status[Math.floor(Math.random() * status.length)],
+        last: last[Math.floor(Math.random() * last.length)],
+        next: next[Math.floor(Math.random() * next.length)],
+    })
+}
+</script>
+
+<template>
+    <table style="text-align: left">
+        <thead>
+            <tr>
+                <th style="height: 20px!important; width: 200px;">流ID</th>
+                <th style="height: 20px!important; width: 50px;">原始清晰度</th>
+                <th style="height: 20px!important; width: 50px;">终端清晰度</th>
+                <th style="height: 20px!important; width: 50px;">特征图尺寸</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="p in streams">
+                <td style="width: 200px;">{{ p.id }}</td>
+                <td style="width: 50px;">{{ p.lr }}</td>
+                <td style="width: 50px;">{{ p.hr }}</td>
+                <td style="width: 50px;">{{ p.fr }}</td>
+            </tr>
+        </tbody>
+    </table>
+</template>
+
+<style scoped>
+table,
+td,
+th {
+    text-align: center;
+    border: 1px solid rgb(128, 128, 128);
+    border-collapse: collapse;
+}
+</style>
