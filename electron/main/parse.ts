@@ -4,6 +4,8 @@ function _parse_graph(summary) {
             "id": node.id,
             "label": node.label,
             "value": node.person.publications.length,
+            "params2D": { ...(node.params || {}), ...(node.params2D || {}) },
+            "params3D": { ...(node.params || {}), ...(node.params3D || {}) },
         })
     );
     const edges = Object.values(summary.edges).map(
@@ -11,6 +13,8 @@ function _parse_graph(summary) {
             "from": edge.from,
             "to": edge.to,
             "value": edge.publications.length,
+            "params2D": { ...(edge.params || {}), ...(edge.params2D || {}) },
+            "params3D": { ...(edge.params || {}), ...(edge.params3D || {}) },
         })
     );
     return { nodes: nodes, edges: edges }
