@@ -14,10 +14,15 @@ const options = {
             color: '#FFFFFF',
         }
     },
+    edges: {
+        color: {
+            inherit: false,
+        }
+    }
 }
 function configure(network: any) {
     network
-        .linkColor(() => '#FFFFFF')
+        .linkColor((edge) => edge.color ? edge.color : '#FFFFFF')
         .nodeThreeObject(node => {
             const sprite = new SpriteText(node.label);
             sprite.material.depthWrite = false; // make sprite background transparent
@@ -47,10 +52,10 @@ const merge_params2Dedges = (edge) => ({
 })
 
 function merge_params3D(o) {
-    const params2D = o.params3D
+    const params3D = o.params3D
     delete o.params2D
     delete o.params3D
-    return { ...o, ...params2D }
+    return { ...params3D, ...o }
 }
 const merge_params3Dlinks = (edge) => ({
     ...merge_params3D(edge),
@@ -63,9 +68,9 @@ const merge_params3Dlinks = (edge) => ({
 })
 function setData(nodes: object[], edges: object[]) {
     if (props.d3) {
-        RefGraph.value.setData(nodes.map(merge_params2D), edges.map(merge_params3Dlinks))
+        RefGraph.value.setData(nodes.map(merge_params3D), edges.map(merge_params3Dlinks))
     } else {
-        RefGraph.value.setData(nodes.map(merge_params3D), edges.map(merge_params2Dedges))
+        RefGraph.value.setData(nodes.map(merge_params2D), edges.map(merge_params2Dedges))
     }
 }
 defineExpose({ setData });
