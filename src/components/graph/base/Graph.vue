@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import VisNetwork from './VisNetwork.vue'
 import ForceGraph3D from './3DForceGraph.vue'
 import SpriteText from 'three-spritetext';
@@ -28,22 +28,44 @@ function configure(network: any) {
 }
 
 const RefGraph = ref(null)
+
+
+function merge_params2D(o) {
+    const params2D = o.params2D
+    delete o.params2D
+    delete o.params3D
+    return { ...params2D, ...o }
+}
+const merge_params2Dedges = (edge) => ({
+    ...merge_params2D(edge),
+    from: edge.from,
+    to: edge.to,
+    id: JSON.stringify({
+        from: edge.from,
+        to: edge.to,
+    })
+})
+
+function merge_params3D(o) {
+    const params2D = o.params3D
+    delete o.params2D
+    delete o.params3D
+    return { ...o, ...params2D }
+}
+const merge_params3Dlinks = (edge) => ({
+    ...merge_params3D(edge),
+    source: edge.from,
+    target: edge.to,
+    id: JSON.stringify({
+        from: edge.from,
+        to: edge.to,
+    })
+})
 function setData(nodes: object[], edges: object[]) {
-    edges = edges
-        .map(edge => {
-            edge.id = JSON.stringify({
-                from: edge.from,
-                to: edge.to,
-            })
-            return edge
-        })
     if (props.d3) {
-        RefGraph.value.setData(nodes, edges.map(edge => ({
-            source: edge.from,
-            target: edge.to,
-        })))
+        RefGraph.value.setData(nodes.map(merge_params2D), edges.map(merge_params3Dlinks))
     } else {
-        RefGraph.value.setData(nodes, edges)
+        RefGraph.value.setData(nodes.map(merge_params3D), edges.map(merge_params2Dedges))
     }
 }
 defineExpose({ setData });
